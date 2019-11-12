@@ -17,6 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.io.PrintWriter;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 
 public class SwingGUI extends JFrame implements ActionListener {
@@ -28,6 +31,9 @@ public class SwingGUI extends JFrame implements ActionListener {
    private final JFileChooser fileChooser;     // Enables user to select file
    private final JButton openFileButton;       // Trigger file open
    private final JButton saveFileButton;
+   private final JMenuBar menuBar;
+   private final JMenu menu;
+   private final JMenuItem open, save, exit;
    File readFile;
    /* Constructor creates GUI components and adds GUI components
       using a GridBagLayout. */
@@ -39,6 +45,21 @@ public class SwingGUI extends JFrame implements ActionListener {
 
       outputLabel = new JLabel("File contents:");
       selectedFileLabel = new JLabel("Selected file:");
+      
+      menuBar = new JMenuBar();
+      menu = new JMenu("File");
+      open = new JMenuItem("Open");
+      open.addActionListener(this);
+      save = new JMenuItem("Save");
+      save.setActionCommand("SAVE");
+      exit = new JMenuItem("Exit");
+      exit.setActionCommand("EXIT");
+      
+      menu.add(open);
+      menu.add(save);
+      menu.add(exit);
+      
+      menuBar.add(menu);
 
       selectedFileField = new JTextField(20);
       selectedFileField.setEditable(false);
@@ -64,31 +85,38 @@ public class SwingGUI extends JFrame implements ActionListener {
       super.setLayout(new GridBagLayout());
 
       layoutConst = new GridBagConstraints();
-      layoutConst.insets = new Insets(10, 10, 5, 5);
       layoutConst.fill = GridBagConstraints.HORIZONTAL;
       layoutConst.gridx = 0;
       layoutConst.gridy = 0;
+      layoutConst.gridwidth = 3;
+      super.add(menuBar);
+      
+      layoutConst = new GridBagConstraints();
+      layoutConst.insets = new Insets(10, 10, 5, 5);
+      layoutConst.fill = GridBagConstraints.HORIZONTAL;
+      layoutConst.gridx = 0;
+      layoutConst.gridy = 1;
       super.add(openFileButton, layoutConst);
       
       layoutConst = new GridBagConstraints();
       layoutConst.insets = new Insets(10, 10, 5, 5);
       layoutConst.gridx = 1;
       layoutConst.fill = GridBagConstraints.HORIZONTAL;
-      layoutConst.gridy = 0;
+      layoutConst.gridy = 1;
       super.add(saveFileButton, layoutConst);
 
       layoutConst = new GridBagConstraints();
       layoutConst.insets = new Insets(10, 5, 5, 1);
       layoutConst.anchor = GridBagConstraints.LINE_END;
       layoutConst.gridx = 2;
-      layoutConst.gridy = 0;
+      layoutConst.gridy = 1;
       super.add(selectedFileLabel, layoutConst);
 
       layoutConst = new GridBagConstraints();
       layoutConst.insets = new Insets(10, 1, 5, 10);
       layoutConst.fill = GridBagConstraints.HORIZONTAL;
-      layoutConst.gridx = 2;
-      layoutConst.gridy = 0;
+      layoutConst.gridx = 3;
+      layoutConst.gridy = 1;
       layoutConst.gridwidth = 2;
       layoutConst.gridheight = 1;
       super.add(selectedFileField, layoutConst);
@@ -97,14 +125,14 @@ public class SwingGUI extends JFrame implements ActionListener {
       layoutConst.insets = new Insets(5, 10, 0, 0);
       layoutConst.fill = GridBagConstraints.HORIZONTAL;
       layoutConst.gridx = 0;
-      layoutConst.gridy = 1;
+      layoutConst.gridy = 2;
       super.add(outputLabel, layoutConst);
 
       layoutConst = new GridBagConstraints();
       layoutConst.insets = new Insets(1, 10, 10, 10);
       layoutConst.fill = GridBagConstraints.HORIZONTAL;
       layoutConst.gridx = 0;
-      layoutConst.gridy = 2;
+      layoutConst.gridy = 3;
       layoutConst.gridheight = 2;
       layoutConst.gridwidth = 4;
       super.add(scrollPane, layoutConst);
@@ -182,6 +210,9 @@ public class SwingGUI extends JFrame implements ActionListener {
                         outputArea.setText("You haven't opened a file yet!");
                     }   break;
                 case "RENAME":
+                    break;
+                case "EXIT":
+                    
                     break;
                 default:
                     outputArea.setText("Function not defined yet");
